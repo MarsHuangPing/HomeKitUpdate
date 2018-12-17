@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  newEMO
+
+  Created by mars on 8/4/15.
+  Copyright (c) 2015 delawareconsulting. All rights reserved.
+*/
+
+
+CFBundleDisplayName = "空气堡";
