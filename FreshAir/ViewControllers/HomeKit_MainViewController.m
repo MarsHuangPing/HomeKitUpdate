@@ -18,7 +18,7 @@
 #import "HomeKit_RoomSettingViewController.h"
 #import "HomeKit_SelectedViewController.h"
 #import "HomeKit_HelpViewController.h"
-
+#import "HomeKit_AboutViewController.h"
 #import "HomeKit_ConfigServiceViewController.h"
 
 #import "AppDelegate.h"
@@ -559,6 +559,9 @@ PMDescriptionViewDelegate, HomeKit_MainTableViewCellDelegate>
         serialNumber = [[NSUserDefaults standardUserDefaults] valueForKey:deviceName];
     }
     
+    //saving parames for about
+    [[HomeKit_DeviceService sharedInstance] saveDeviceParamsWithDic:device deviceName:deviceName];
+    
     
     cell.serialNumber = serialNumber;//[@"AIRBURG-NEX360A-8F1F" isEqualToString:deviceName]? @"0403201804200101":serialNumber; //@"0403201804200101";//serialNumber;//
     cell.reachable = accessory.reachable;
@@ -568,6 +571,8 @@ PMDescriptionViewDelegate, HomeKit_MainTableViewCellDelegate>
     
      
      NSString *log = [NSString stringWithFormat:@"%@ \n reachable: %@; \n serial: %@", deviceName, cell.reachable?@"True":@"False", serialNumber];
+    log = [NSString stringWithFormat:@"%@ \n PM Value: %@", log, cell.lblPMValue.text];
+    log = [NSString stringWithFormat:@"%@ \n CO2 Value: %@", log, cell.lblCo2Value.text];
      
      kDebugLog(log);
      
@@ -598,10 +603,21 @@ PMDescriptionViewDelegate, HomeKit_MainTableViewCellDelegate>
     
     HomeKit_MainTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(!cell.lblOfflineAlert.hidden){
+        HomeKit_AboutViewController *vcAbout = (HomeKit_AboutViewController *)[[HomeKit_CommonAPI sharedInstance] getViewControllerName:@"AboutViewController"];
+        
+        NSMutableDictionary *device = [_maDevices objectAtIndex:indexPath.row];
+        NSString *deviceName = [[device objectForKey:kPurifierName] ml_stringValue];
+        
+        vcAbout.device = device;
+        vcAbout.deviceName = deviceName;
+        [self.navigationController pushViewController:vcAbout animated:YES];
         return;
     }
     
     if(!cell.deviceIsOnLine){
+        
+        
+        
         return;
     }
     
@@ -713,15 +729,16 @@ PMDescriptionViewDelegate, HomeKit_MainTableViewCellDelegate>
 
 - (void)handleCompletionForWatchInfoOutdoorWithServiceResponse:(HomeKit_WatchInfoOutdoorResponse *)pWatchInfoOutdoorResponse
 {
+    
     NSInteger pm = pWatchInfoOutdoorResponse.watchInfoOutdoor.aqi;
     
-    
+    if(pm <= 0){
+        return;
+    }
     
     NSMutableAttributedString *masPM25 = [[NSMutableAttributedString alloc] init];
     [masPM25 appendAttributedString:[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"  %ld", (long)pm] attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont fontWithName:@"PingFangSC-Regular" size:48]}]];
     [masPM25 appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"AQI" attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont fontWithName:@"PingFangSC-Regular" size:18]}]];
-    
-    
     
     _outdoorValue = pWatchInfoOutdoorResponse.watchInfoOutdoor.value;
     NSString *airQuality = [[HomeKit_DeviceService sharedInstance] airQualityDescriptionWithValue:pm];
@@ -734,8 +751,6 @@ PMDescriptionViewDelegate, HomeKit_MainTableViewCellDelegate>
         _lblPMDensity.text = [NSString stringWithFormat:@"PM2.5: %ld μg/m³", (long)_outdoorValue];
         _lblPM25Count.attributedText = masPM25;
     }
-    
-    
     
     //date
     NSDateFormatter *df = [[NSDateFormatter alloc] init];

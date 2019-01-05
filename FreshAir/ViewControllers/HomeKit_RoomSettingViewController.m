@@ -264,7 +264,7 @@
         }
         
 
-        [self.navigationController pushViewController:vcDeviceList animated:YES];
+//        [self.navigationController pushViewController:vcDeviceList animated:YES];
     }
     else if(self.enterType == EnterTypeSelect){
         

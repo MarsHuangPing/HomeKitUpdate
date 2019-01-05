@@ -566,7 +566,10 @@
 
 - (void)updateCellWithXLinkDevice:(XLinkDevice *)pXlinkDevice
 {
-    self.viewCellPanel.backgroundColor = RGB(246, 251, 253);
+    if(kIsDebug){
+        self.viewCellPanel.backgroundColor = RGB(246, 251, 253);
+    }
+    
     
     self.lblOfflineAlert.hidden = YES;
     

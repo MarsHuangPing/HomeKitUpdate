@@ -17,6 +17,10 @@
 #import "XLinkDevice.h"
 #import "HomeKit_CommonAPI.h"
 
+#import "NSObject+ML.h"
+
+#import <HomeKit/HomeKit.h>
+
 @interface HomeKit_DeviceService()
 {
     NSTimer *_timerGetDevices;
@@ -678,6 +682,41 @@
         pCompletionBlock(pServiceResponse);
     }];
 
+}
+
+
+#pragma mark - for about
+- (void)saveDeviceParamsWithDic:(NSMutableDictionary *)pPamames deviceName:(NSString *)pDeviceName{
+    NSString *searial = [((HMCharacteristic *)[pPamames objectForKey:kPurifieSerial]).value ml_stringValue];
+    if(searial.length != 0){
+        [[NSUserDefaults standardUserDefaults] setValue:searial
+                                                 forKey:[NSString stringWithFormat:@"%@___%@", pDeviceName, kPurifieSerial]];
+    }
+    
+    NSString *manufacturer = [((HMCharacteristic *)[pPamames objectForKey:kPurifieManufacturer]).value ml_stringValue];
+    if(manufacturer.length != 0){
+        [[NSUserDefaults standardUserDefaults] setValue:manufacturer
+                                                 forKey:[NSString stringWithFormat:@"%@___%@", pDeviceName, kPurifieManufacturer]];
+    }
+    
+    NSString *model = [((HMCharacteristic *)[pPamames objectForKey:kPurifieModel]).value ml_stringValue];
+    if(model.length != 0){
+        [[NSUserDefaults standardUserDefaults] setValue:model
+                                                 forKey:[NSString stringWithFormat:@"%@___%@", pDeviceName, kPurifieModel]];
+    }
+    
+    NSString *firmware = [((HMCharacteristic *)[pPamames objectForKey:kPurifieFirmware]).value ml_stringValue];
+    if(firmware.length != 0){
+        [[NSUserDefaults standardUserDefaults] setValue:firmware
+                                                 forKey:[NSString stringWithFormat:@"%@___%@", pDeviceName, kPurifieFirmware]];
+    }
+    
+}
+
+- (NSString *)loadDeviceParamsWithDeviceName:(NSString *)pDeviceName key:(NSString *)pKey{
+    NSString *value = [[NSUserDefaults standardUserDefaults] valueForKey:[NSString stringWithFormat:@"%@___%@", pDeviceName, pKey]];
+    
+    return value;
 }
 
 @end

@@ -10,6 +10,7 @@
 
 @interface HomeKit_AboutViewController : HomeKit_BaseViewController
 @property (nonatomic, strong) NSMutableDictionary *device;
+@property (nonatomic, strong) NSString *deviceName;
 
 - (void)startToCheckUpgrade;
 - (void)valueWhenEnterBg;

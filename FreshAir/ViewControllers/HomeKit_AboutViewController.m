@@ -98,8 +98,18 @@
     _manager = [HomeKit_AccessoryManager sharedInstance];
     _manager.delegate = self;
     [_manager getHomesNotify];
+    
+    
     _serial = [((HMCharacteristic *)[self.device objectForKey:kPurifierSerialNumber]).value ml_stringValue];
     NSLog(@"serial.....:%@",_serial);
+    if(_serial.length == 0){
+        _lblSerial.text = [[HomeKit_DeviceService sharedInstance] loadDeviceParamsWithDeviceName:self.deviceName key:kPurifieSerial];
+        _lblManufacturer.text = [[HomeKit_DeviceService sharedInstance] loadDeviceParamsWithDeviceName:self.deviceName key:kPurifieManufacturer];
+        _lblModel.text = [[HomeKit_DeviceService sharedInstance] loadDeviceParamsWithDeviceName:self.deviceName key:kPurifieModel];
+        _lblFirmware.text = [[HomeKit_DeviceService sharedInstance] loadDeviceParamsWithDeviceName:self.deviceName key:kPurifieFirmware];
+        
+    }
+    
     
     if(_serial && _manager.isUpgrading){
         //[_manager.isUpgrading[_serial] ml_intValue]

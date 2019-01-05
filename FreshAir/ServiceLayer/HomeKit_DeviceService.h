@@ -237,4 +237,8 @@
 
 - (void)checkIfXLinkServiceByOtherBind:(NSString *)PID completionBlock:(ServiceCompletionBlock)pCompletionBlock;
 
+#pragma mark - for about
+- (void)saveDeviceParamsWithDic:(NSMutableDictionary *)pPamames deviceName:(NSString *)pDeviceName;
+- (NSString *)loadDeviceParamsWithDeviceName:(NSString *)pDeviceName key:(NSString *)pKey;
+
 @end
