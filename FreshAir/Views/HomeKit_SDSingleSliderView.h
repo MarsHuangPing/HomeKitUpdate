@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SDRangeSliderViewDelegate <NSObject>
+@protocol SDRangeSingleSliderViewDelegate <NSObject>
 
 @optional
 - (void)sliderValueDidChangedOfLeft:(double)left right:(double)right;
@@ -82,5 +82,5 @@
 @property (nonatomic,strong) UIColor* lineColor;
 @property (nonatomic,strong) UIColor* highlightLineColor;
 
-@property (nonatomic,weak) id<SDRangeSliderViewDelegate> delegate;
+@property (nonatomic,weak) id<SDRangeSingleSliderViewDelegate> delegate;
 @end

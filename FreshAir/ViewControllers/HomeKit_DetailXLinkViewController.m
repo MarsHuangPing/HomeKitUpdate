@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, ChangeType) {
 #import "HistoryInfoResponse.h"
 #import "historyInfo.h"
 
-@interface HomeKit_DetailXLinkViewController ()<UITableViewDelegate, PMDescriptionViewDelegate, SDRangeSliderViewDelegate>
+@interface HomeKit_DetailXLinkViewController ()<UITableViewDelegate, PMDescriptionViewDelegate, SDRangeSliderViewDelegate, SDRangeSingleSliderViewDelegate>
 {
     __weak IBOutlet UIView *_viewHeader;
     __weak IBOutlet UIView *_viewBannerBg;

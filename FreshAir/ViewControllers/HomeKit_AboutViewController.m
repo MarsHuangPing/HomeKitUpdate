@@ -197,7 +197,8 @@
                                                                              message:@"确定移除设备？" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *sleepAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        HMAccessory *acc = [_mdCharactestiric objectForKey:kPurifier];
+//        HMAccessory *acc = [_mdCharactestiric objectForKey:kPurifier];
+        HMAccessory *acc = [self.device objectForKey:kPurifier];
         _manager.isAdding = NO;
         [_manager.currentHome removeAccessory:acc completionHandler:^(NSError * _Nullable error) {
             if(error){
